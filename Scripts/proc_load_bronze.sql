@@ -1,74 +1,80 @@
-create or alter procedure bronze.load_bronze as 
-begin 
+CREATE OR ALTER PROCEDURE bronze.load_bronze
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON; -- Ensures transaction rollback on failure
 
-	turncate table bronze.erp_px_cat_g1v2;
+    BEGIN TRY
+        -- Truncate and load each table
+        TRUNCATE TABLE bronze.erp_px_cat_g1v2;
 
-	bulk insert bronze.erp_px_cat_g1v2
-	from 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
-	with
-	(
-		firstrow=2,
-		fieldterminator=',',
-		tablock
-	)
+        BULK INSERT bronze.erp_px_cat_g1v2
+        FROM 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '\n',
+            TABLOCK
+        );
 
-	turncate table bronze.erp_loc_a101;
+        TRUNCATE TABLE bronze.erp_loc_a101;
 
-	bulk insert bronze.erp_loc_a101
-	from 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
-	with
-	(
-		firstrow=2,
-		fieldterminator=',',
-		tablock
-	)
+        BULK INSERT bronze.erp_loc_a101
+        FROM 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '\n',
+            TABLOCK
+        );
 
-	turncate table bronze.erp_cust_az12;
+        TRUNCATE TABLE bronze.erp_cust_az12;
 
-	bulk insert bronze.erp_cust_az12
-	from 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
-	with
-	(
-		firstrow=2,
-		fieldterminator=',',
-		tablock
-	)
+        BULK INSERT bronze.erp_cust_az12
+        FROM 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '\n',
+            TABLOCK
+        );
 
-	turncate table bronze.crm_cust_info;
+        TRUNCATE TABLE bronze.crm_cust_info;
 
-	bulk insert bronze.crm_cust_info
-	from 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\cust_info.csv'
-	with
-	(
-		firstrow=2,
-		fieldterminator=',',
-		tablock
-	)
-	turncate table bronze.crm_prd_info;
+        BULK INSERT bronze.crm_cust_info
+        FROM 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\cust_info.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '\n',
+            TABLOCK
+        );
 
-	bulk insert bronze.crm_prd_info
-	from 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\prd_info.csv'
-	with
-	(
-		firstrow=2,
-		fieldterminator=',',
-		tablock
-	)
-	turncate table bronze.crm_sales_details;
+        TRUNCATE TABLE bronze.crm_prd_info;
 
-	bulk insert bronze.crm_sales_details
-	from 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\sales_details.csv'
-	with
-	(
-		firstrow=2,
-		fieldterminator=',',
-		tablock
-	)
+        BULK INSERT bronze.crm_prd_info
+        FROM 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\prd_info.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '\n',
+            TABLOCK
+        );
 
-end
+        TRUNCATE TABLE bronze.crm_sales_details;
 
+        BULK INSERT bronze.crm_sales_details
+        FROM 'C:\Users\narra\OneDrive\Documents\Warehouse\sql-data-warehouse-project\datasets\source_erp\sales_details.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            ROWTERMINATOR = '\n',
+            TABLOCK
+        );
 
-
-
-
-
+    END TRY
+    BEGIN CATCH
+        PRINT 'Error occurred: ' + ERROR_MESSAGE();
+    END CATCH;
+END;
+GO
