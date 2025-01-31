@@ -1,21 +1,28 @@
-use master
--- to check database exists or not and drop the database
-IF EXISTS (SELECT 1 FROM sys.databases where name='DataWarehouse')
-begin 
-	alter database DataWarehouse set single_user with rollback immediate;
-	Drop database DataWarehouse;
-end;
--- create database
-create database DataWarehouse;
-go
--- use database
-use DataWarehouse;
-go
---- create schema
-create schema bronze;
-go
+USE master;
+GO
 
-create schema Silver;
-go
+-- Check if the database exists, and drop if it does
+IF DB_ID('DataWarehouse') IS NOT NULL
+BEGIN
+    ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE DataWarehouse;
+END;
+GO
 
-create schema Gold;
+-- Create the database
+CREATE DATABASE DataWarehouse;
+GO
+
+-- Switch to the new database
+USE DataWarehouse;
+GO
+
+-- Create schemas
+CREATE SCHEMA bronze;
+GO
+
+CREATE SCHEMA Silver;
+GO
+
+CREATE SCHEMA Gold;
+GO
